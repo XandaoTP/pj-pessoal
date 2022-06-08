@@ -3,6 +3,9 @@ import { Button, Container, Form, FormControlProps } from "react-bootstrap";
 import styled from "styled-components";
 import bckground from "../../src/assets/img/papel.jpg"
 import logo from "../../src/assets/img/Quer nos ajudar.png"
+import { addDoc, collection, doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
+import { db } from "./firebase"
+
 
 type Props = FormControlProps
 
@@ -16,8 +19,15 @@ export function Home ( props : Props ) {
             name: '',
             namebb:''
         },
-        onSubmit: (values) => {
-            console.log('oi', values)
+        onSubmit: (name) => {
+            const groceriesColRef = collection(db, 'groceryLists')
+            return addDoc(groceriesColRef, {
+                    created: serverTimestamp(),
+                    users: [{ 
+                        name: name,
+                        namebb: name
+                    }]
+                });
         }
     })
 
@@ -33,21 +43,23 @@ export function Home ( props : Props ) {
             <Container className="d-flex flex-column align-items-center">
                 <img src={logo} className='mt-4' width="290px" height="270px" alt='nossamenina'/>
                 <Form onSubmit={formik.handleSubmit}>
-                <Form.Label>Seu nome</Form.Label>
+                <Form.Label className='mb-0'>Seu nome</Form.Label>
                 <Form.Control 
                 type="text"
                 placeholder="Digite seu nssome"
                 {...formProps('name')}
               />
-              <Form.Label>Sua sugestão</Form.Label>
+              <Form.Label className='mb-0'>Sua sugestão</Form.Label>
               <Form.Control
                 placeholder="Digite o nome da nossa menina."
                 {...formProps('namebb')}
                 />
-                <Button 
-                className="text-center mt-3"
-                type='submit'
-                >Enviar</Button>
+                <div className="d-grid mt-3 mb-3">
+                    <Button 
+                    className=" mt-3"
+                    type='submit'
+                    >Enviar</Button>
+                </div>
                 </Form>
             </Container>
         </Bckgroud>
