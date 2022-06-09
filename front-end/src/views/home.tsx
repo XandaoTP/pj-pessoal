@@ -3,8 +3,8 @@ import { Button, Container, Form, FormControlProps } from "react-bootstrap";
 import styled from "styled-components";
 import bckground from "../../src/assets/img/papel.jpg"
 import logo from "../../src/assets/img/Quer nos ajudar.png"
-import { addDoc, collection, doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
-import { db } from "./firebase"
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../services/firebase";
 
 
 type Props = FormControlProps
@@ -19,16 +19,13 @@ export function Home ( props : Props ) {
             name: '',
             namebb:''
         },
-        onSubmit: (name) => {
-            const groceriesColRef = collection(db, 'groceryLists')
-            return addDoc(groceriesColRef, {
-                    created: serverTimestamp(),
-                    users: [{ 
-                        name: name,
-                        namebb: name
-                    }]
-                });
-        }
+        onSubmit: async (values) => {
+            const docRef = await addDoc(collection(db, "nomes"), {
+                name: values.name,
+                Nomebb: values.namebb
+              });  
+              console.log(docRef)
+            }
     })
 
     const formProps = (fieldName: keyof FormValues ) => {
