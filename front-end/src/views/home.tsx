@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import { Button, Card, Container, Form, FormControlProps } from "react-bootstrap";
 import styled from "styled-components";
-import bckground from "../../src/assets/img/papel.jpg"
 import logo from "../../src/assets/img/Quer nos ajudar.png"
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../services/firebase";
@@ -46,7 +45,7 @@ export function Home ( props : Props ) {
 
 }
     return (
-        <Bckgroud className="vh-100 ">
+        <div className="vh-100 ">
             <Container className="d-flex flex-column align-items-center">
                 <img src={logo} className='mt-4' width="290px" height="270px" alt='nossamenina'/> 
                 <Cardbck className="p-5 mt-5">
@@ -74,18 +73,15 @@ export function Home ( props : Props ) {
                 </Form>
                 </Cardbck>
             </Container>
-        </Bckgroud>
+        </div>
     )
 }
 
-const Bckgroud = styled.div`
-    background: url(${bckground});
-    background-size: cover;
-`
 const Cardbck = styled(Card)`
     background-color: #f6e9f2;
     border-radius: 30px;
     box-shadow: -2px 5px 13px -3px #000000;
+    margin-bottom: 50px;
 `
 const CustomButton = styled(Button)`
     border: none;
