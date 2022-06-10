@@ -2,27 +2,37 @@ import { useFormik } from "formik";
 import { Button, Card, Container, Form, FormControlProps } from "react-bootstrap";
 import styled from "styled-components";
 import logo from "../../src/assets/img/Quer nos ajudar.png"
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { toast } from 'react-toastify';
+import { useEffect, useState } from "react";
+import { names } from "../entities/nomes";
 
-
+const getNames = async ():Promise<names> => {
+    const doc = collection(db, 'nomes')
+    const names = await getDocs(doc)
+    const productsSnapshot = names.docs.map(doc => doc.data())
+    return productsSnapshot
+}
 type Props = FormControlProps
+
+type productsProps = names | null
 
 type FormValues = {
     name: string
-    namebb: string
+    Nomebb: string
+    id: string
 }
 export function Home ( props : Props ) {
     const formik = useFormik({
         initialValues: {
             name: '',
-            namebb:''
+            Nomebb:''
         },
         onSubmit: async (values) => {
              await addDoc(collection(db, "nomes"), {
                 name: values.name,
-                Nomebb: values.namebb
+                Nomebb: values.Nomebb
               });  
               formik.resetForm();
               toast.success('Obrigado por sugerir um nome. Sua sugestão foi armazenada e em breve divulgaremos a lista de sugestões.', {
@@ -42,8 +52,23 @@ export function Home ( props : Props ) {
         ...formik.getFieldProps(fieldName),
         controlId: `input-${fieldName}`
     }
-
 }
+const [names, setNames]:any = useState()
+        useEffect(() => {
+            const fetch = async ():Promise<void | productsProps > => {
+                try{
+                    const result = await getNames()
+                    setNames(result)
+                    JSON.stringify(names)
+               } catch{
+                    toast.error('Tente novamente', {
+                        theme: 'colored'
+                    })
+               }      
+            }
+            fetch()
+        }, [])
+        console.log(names)
     return (
         <div className="vh-100 ">
             <Container className="d-flex flex-column align-items-center">
@@ -62,7 +87,7 @@ export function Home ( props : Props ) {
               <Form.Control
                 placeholder="Digite sua sugestao."
                 required
-                {...formProps('namebb')}
+                {...formProps('Nomebb')}
                 />
                 <div className="d-grid mt-3 mb-3">
                     <CustomButton 
@@ -71,6 +96,20 @@ export function Home ( props : Props ) {
                     >Enviar</CustomButton>
                 </div>
                 </Form>
+                {!names ? (
+                    <p>....</p>
+                ) : (
+                    <>
+                    {names.map((name: FormValues) => (
+                        <div key={name.id} className='d-flex justify-content-between'>
+                            <Pnames className="text-start fw-bold">{name.name}:</Pnames>
+                            <Pnames>&emsp;&emsp;</Pnames>
+                            <Pnames className="text-end fw-bold"> {name.Nomebb}</Pnames>
+                        </div>
+                    ))}   
+                    </>
+                )
+            }
                 </Cardbck>
             </Container>
         </div>
@@ -85,4 +124,7 @@ const Cardbck = styled(Card)`
 `
 const CustomButton = styled(Button)`
     border: none;
+`
+const Pnames = styled.p`
+    font-size: 10px;
 `
