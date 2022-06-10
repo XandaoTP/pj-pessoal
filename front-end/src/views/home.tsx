@@ -35,6 +35,9 @@ export function Home ( props : Props ) {
                 Nomebb: values.Nomebb
               });  
               formik.resetForm();
+              setTimeout(function() {
+                window.location.reload();
+              }, 5000); // 3 minutos
               toast.success('Obrigado por sugerir um nome. Sua sugestão foi armazenada e em breve divulgaremos a lista de sugestões.', {
                 position: "top-center",
                 autoClose: 5000,
@@ -59,7 +62,6 @@ const [names, setNames]:any = useState()
                 try{
                     const result = await getNames()
                     setNames(result)
-                    JSON.stringify(names)
                } catch{
                     toast.error('Tente novamente', {
                         theme: 'colored'
