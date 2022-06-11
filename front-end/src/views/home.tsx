@@ -1,29 +1,30 @@
 import { useFormik } from "formik";
-import { Button, Card, Container, Form, FormControlProps } from "react-bootstrap";
+import { Button, Card, Container, Form } from "react-bootstrap";
 import styled from "styled-components";
 import logo from "../../src/assets/img/Quer nos ajudar.png"
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs, DocumentData } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { toast } from 'react-toastify';
 import { useEffect, useState } from "react";
-import { names } from "../entities/nomes";
 
-const getNames = async ():Promise<names> => {
+const getNames = async () => {
     const doc = collection(db, 'nomes')
     const names = await getDocs(doc)
-    const productsSnapshot = names.docs.map(doc => doc.data())
-    return productsSnapshot
+    return names.docs.map(doc =>({...doc.data(), id:doc.id}))  
 }
-type Props = FormControlProps
 
-type productsProps = names | null
 
 type FormValues = {
     name: string
     Nomebb: string
     id: string
+    collection: string
+    nomes: string
+    payload: any
+    doc: string
 }
-export function Home ( props : Props ) {
+export function Home () {
+    const [disable, setDisable] = useState(false)
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -38,7 +39,7 @@ export function Home ( props : Props ) {
               setTimeout(function() {
                 window.location.reload();
               }, 5000); // 3 minutos
-              toast.success('Obrigado por sugerir um nome. Sua sugestão foi armazenada e em breve divulgaremos a lista de sugestões.', {
+              toast.success('Obrigado por sugerir um nome. Sua sugestão será relacionada na lista abaixo', {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -47,6 +48,7 @@ export function Home ( props : Props ) {
                 draggable: true,
                 progress: undefined,
                 });
+                setDisable(true)
             }
     })
 
@@ -56,15 +58,14 @@ export function Home ( props : Props ) {
         controlId: `input-${fieldName}`
     }
 }
-const [names, setNames]:any = useState()
+const [names, setNames] = useState<DocumentData>()
         useEffect(() => {
-            const fetch = async ():Promise<void | productsProps > => {
+            const fetch = async () => {
                 try{
                     const result = await getNames()
                     setNames(result)
                } catch{
                     toast.error('Tente novamente', {
-                        theme: 'colored'
                     })
                }      
             }
@@ -84,12 +85,14 @@ const [names, setNames]:any = useState()
                 placeholder="Digite seu nome"
                 required
                 {...formProps('name')}
+                disabled={disable}
               />
               <Form.Label className='mb-0'>Sua sugestão</Form.Label>
               <Form.Control
                 placeholder="Digite sua sugestao."
                 required
                 {...formProps('Nomebb')}
+                disabled={disable}
                 />
                 <div className="d-grid mt-3 mb-3">
                     <CustomButton 
