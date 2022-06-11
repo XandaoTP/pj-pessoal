@@ -104,15 +104,14 @@ const [names, setNames] = useState<DocumentData>()
                 {!names ? (
                     <p>....</p>
                 ) : (
-                    <>
+                    <table>
                     {names.map((name: FormValues) => (
-                        <div key={name.id} className='d-flex justify-content-between'>
-                            <Pnames className="text-start fw-bold">{name.name}:</Pnames>
-                            <Pnames>&emsp;&emsp;</Pnames>
-                            <Pnames className="text-end fw-bold"> {name.Nomebb}</Pnames>
-                        </div>
+                        <tbody>
+                            <tr className="text-start fw-bold">{name.name}:</tr>
+                            <tr className="text-end fw-bold">{name.Nomebb}</tr>
+                        </tbody>
                     ))}   
-                    </>
+                    </table>
                 )
             }
                 </Cardbck>
