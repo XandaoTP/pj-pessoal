@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { Button, Card, Container, Form } from "react-bootstrap";
+import { Button, Card, Container, Form, Table } from "react-bootstrap";
 import styled from "styled-components";
 import logo from "../../src/assets/img/Quer nos ajudar.png"
 import { collection, addDoc, getDocs, DocumentData } from "firebase/firestore";
@@ -10,7 +10,9 @@ import { useEffect, useState } from "react";
 const getNames = async () => {
     const doc = collection(db, 'nomes')
     const names = await getDocs(doc)
-    return names.docs.map(doc =>({...doc.data(), id:doc.id}))  
+    const snapshot = names.docs.map(doc =>({...doc.data(), id:doc.id}))
+    const order = snapshot.sort()  
+    return order
 }
 
 
@@ -51,7 +53,6 @@ export function Home () {
                 setDisable(true)
             }
     })
-
     const formProps = (fieldName: keyof FormValues ) => {
     return {
         ...formik.getFieldProps(fieldName),
@@ -71,7 +72,6 @@ const [names, setNames] = useState<DocumentData>()
             }
             fetch()
         }, [])
-        console.log(names)
     return (
         <div className="vh-100 ">
             <Container className="d-flex flex-column align-items-center">
@@ -101,20 +101,34 @@ const [names, setNames] = useState<DocumentData>()
                     >Enviar</CustomButton>
                 </div>
                 </Form>
-                {!names ? (
-                    <p>....</p>
-                ) : (
-                    <table>
-                    {names.map((name: FormValues) => (
+                </Cardbck>
+                {names ? (
+                    <Table striped responsive className="bg-white">
+                        <thead>
+                            <tr className="bg-dark">
+                                <th className="text-start text-white rfw-bold">Nome</th>
+                                <th className="text-end text-white fw-bold">Sugestão</th>
+                            </tr>
+                        </thead>
+                        {names.sort(function(a: FormValues, b: FormValues) {
+                        if(a.name < b.name) {
+                            return -1;
+                        } else {
+                            return true;
+                        }
+                        }).map((name: FormValues) => (
                         <tbody>
-                            <tr className="text-start fw-bold">{name.name}:</tr>
-                            <tr className="text-end fw-bold">{name.Nomebb}</tr>
+                            <Nomebb className="text-white">
+                                <Tdname className="text-start fw-bold">{name.name}:</Tdname>
+                                <Tdname className="text-end fw-bold">{name.Nomebb}</Tdname>
+                            </Nomebb>    
                         </tbody>
-                    ))}   
-                    </table>
+                    )).sort()}   
+                    </Table>
+                    ) : (
+                    <p>....</p>               
                 )
             }
-                </Cardbck>
             </Container>
         </div>
     )
@@ -129,6 +143,10 @@ const Cardbck = styled(Card)`
 const CustomButton = styled(Button)`
     border: none;
 `
-const Pnames = styled.p`
-    font-size: 10px;
+const Nomebb = styled.tr`
+    color: #9f1896;
+    background-color: #f6e9f2;
+`
+const Tdname = styled.td`
+    color: #ffffff;
 `
