@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import bckground from "../img/papel.jpg"
+
  
 export const GlobalStyle = createGlobalStyle`
   body {

@@ -27,7 +27,6 @@ type FormValues = {
     localeCompare: any
 }
 export function Home () {
-    const [disable, setDisable] = useState(false)
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -74,32 +73,31 @@ const [names, setNames] = useState<DocumentData>()
     return (
         <div className="vh-100 ">
             <Container className="d-flex flex-column align-items-center">
-                <img src={logo} className='mt-4' width="290px" height="270px" alt='nossamenina'/> 
-                <Cardbck className="p-5 mt-5">
-                <p className="fw-bold">Sugira quantas vezes quiser!</p>
-                <Form onSubmit={formik.handleSubmit}>
-                <Form.Label className='mb-0'>Seu nome</Form.Label>
-                <Form.Control 
-                type="text"
-                placeholder="Digite seu nome"
-                required
-                {...formProps('name')}
-                disabled={disable}
-              />
-              <Form.Label className='mb-0'>Sua sugestão</Form.Label>
-              <Form.Control
-                placeholder="Digite sua sugestao."
-                required
-                {...formProps('Nomebb')}
-                disabled={disable}
-                />
-                <div className="d-grid mt-3 mb-3">
-                    <CustomButton 
-                    className=" mt-3 bg-secondary"
-                    type='submit'
-                    >Enviar</CustomButton>
-                </div>
-                </Form>
+                <img src={logo} className='mt-4' width="326px" height="290px" alt='nossamenina'/> 
+                <Ppapaimamae className="fw-bold text-center text-dark mt-3"> MAMÃE PRISCILA E PAPAI ALEXANDRE</Ppapaimamae>
+                <Cardbck className="p-5 mt-1">                    
+                    <p className="fw-bold text-center">Sugira quantas vezes quiser!</p>
+                    <Form onSubmit={formik.handleSubmit}>
+                        <Form.Label className='mb-0'>Seu nome</Form.Label>
+                        <Form.Control 
+                        type="text"
+                        placeholder="Digite seu nome"
+                        required
+                        {...formProps('name')}
+                        />
+                        <Form.Label className='mb-0'>Sua sugestão</Form.Label>
+                        <Form.Control
+                        placeholder="Digite sua sugestao."
+                        required
+                        {...formProps('Nomebb')}
+                        />
+                        <div className="d-grid mt-3 mb-3">
+                            <CustomButton 
+                            className=" mt-3 bg-secondary"
+                            type='submit'
+                            >Enviar</CustomButton>
+                        </div>
+                    </Form>
                 </Cardbck>
                 {names ? (
                     <Table striped responsive className="bg-white border border-secondar opacity-75">
@@ -145,4 +143,10 @@ const Nomebb = styled.tr`
 const Tdname = styled.td`
     color: #c73098 !important;
     opacity: 100;
+`
+const Ppapaimamae = styled.p`
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+font-family: 'Pacifico', cursive;
+font-size: 1rem;
+color: #7330df !important;
 `
