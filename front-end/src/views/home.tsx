@@ -39,7 +39,7 @@ export function Home () {
                 Nomebb: values.Nomebb
               });  
               formik.resetForm();
-              toast.success('Obrigado por sugerir um nome. Sua sugestão já está na lista abaixo.', {
+              toast.success(`Obrigado, ${values.name}! Sua sugestão já está na lista abaixo.`, {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,
