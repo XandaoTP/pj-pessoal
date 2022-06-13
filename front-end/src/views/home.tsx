@@ -74,7 +74,7 @@ const [names, setNames] = useState<DocumentData>()
         <div className="vh-100 ">
             <Container className="d-flex flex-column align-items-center">
                 <img src={logo} className='mt-4' width="326px" height="290px" alt='nossamenina'/> 
-                <Ppapaimamae className="fw-bold text-center text-dark mt-3"> MAMÃE PRISCILA E PAPAI ALEXANDRE</Ppapaimamae>
+                <p className="fw-bold text-center text-dark mt-3"> MAMÃE PRISCILA E PAPAI ALEXANDRE</p>
                 <Cardbck className="p-5 mt-1">                    
                     <p className="fw-bold text-center">Sugira quantas vezes quiser!</p>
                     <Form onSubmit={formik.handleSubmit}>
@@ -143,10 +143,4 @@ const Nomebb = styled.tr`
 const Tdname = styled.td`
     color: #c73098 !important;
     opacity: 100;
-`
-const Ppapaimamae = styled.p`
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-font-family: 'Pacifico', cursive;
-font-size: 1rem;
-color: #7330df !important;
 `
