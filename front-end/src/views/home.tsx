@@ -24,6 +24,7 @@ type FormValues = {
     nomes: string
     payload: any
     doc: string
+    localeCompare: any
 }
 export function Home () {
     const [disable, setDisable] = useState(false)
@@ -110,13 +111,7 @@ const [names, setNames] = useState<DocumentData>()
                                 <th className="text-end text-white fw-bold">Sugestão</th>
                             </tr>
                         </thead>
-                        {names.sort(function(a: FormValues, b: FormValues) {
-                        if(a.name < b.name) {
-                            return -1;
-                        } else {
-                            return true;
-                        }
-                        }).map((name: FormValues) => (
+                        {names.sort((a: FormValues, b: FormValues) => { return a.name.localeCompare(b.name) }).map((name: FormValues) => (
                         <tbody>
                             <Nomebb className="text-white">
                                 <Tdname className="text-start fw-bold">{name.name}:</Tdname>
