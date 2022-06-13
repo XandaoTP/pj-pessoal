@@ -5,7 +5,7 @@ import logo from "../../src/assets/img/Quer nos ajudar.png"
 import { collection, addDoc, getDocs, DocumentData } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { toast } from 'react-toastify';
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 const getNames = async () => {
     const doc = collection(db, 'nomes')
@@ -39,10 +39,7 @@ export function Home () {
                 Nomebb: values.Nomebb
               });  
               formik.resetForm();
-              setTimeout(function() {
-                window.location.reload();
-              }, 5000); // 3 minutos
-              toast.success('Obrigado por sugerir um nome. Sua sugestão será relacionada na lista abaixo', {
+              toast.success('Obrigado por sugerir um nome. Sua sugestão já está na lista abaixo.', {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -52,6 +49,7 @@ export function Home () {
                 progress: undefined,
                 });
                 setDisable(true)
+                forceUpdate()
             }
     })
     const formProps = (fieldName: keyof FormValues ) => {
@@ -60,6 +58,7 @@ export function Home () {
         controlId: `input-${fieldName}`
     }
 }
+const [ attvalue, forceUpdate] = useReducer(x=> x + 1, 0);
 const [names, setNames] = useState<DocumentData>()
         useEffect(() => {
             const fetch = async () => {
@@ -72,7 +71,7 @@ const [names, setNames] = useState<DocumentData>()
                }      
             }
             fetch()
-        }, [])
+        }, [attvalue])
     return (
         <div className="vh-100 ">
             <Container className="d-flex flex-column align-items-center">
@@ -104,17 +103,19 @@ const [names, setNames] = useState<DocumentData>()
                 </Form>
                 </Cardbck>
                 {names ? (
-                    <Table striped responsive className="bg-white">
+                    <Table striped responsive className="bg-white border border-secondar opacity-75">
                         <thead>
                             <tr className="bg-dark">
-                                <th className="text-start text-white rfw-bold">Nome</th>
+                                <th className="text-start text-white rfw-bold opacity-100">Nome</th>
                                 <th className="text-end text-white fw-bold">Sugestão</th>
                             </tr>
                         </thead>
-                        {names.sort((a: FormValues, b: FormValues) => { return a.name.localeCompare(b.name) }).map((name: FormValues) => (
+                        {names.sort((a: FormValues, b: FormValues) => { 
+                            return a.name.localeCompare(b.name) })
+                            .map((name: FormValues) => (
                         <tbody>
                             <Nomebb className="text-white">
-                                <Tdname className="text-start fw-bold">{name.name}:</Tdname>
+                                <td className="text-start text-dark fw-bold">{name.name}:</td>
                                 <Tdname className="text-end fw-bold">{name.Nomebb}</Tdname>
                             </Nomebb>    
                         </tbody>
@@ -143,5 +144,6 @@ const Nomebb = styled.tr`
     background-color: #f6e9f2;
 `
 const Tdname = styled.td`
-    color: #ffffff;
+    color: #c73098 !important;
+    opacity: 100;
 `
