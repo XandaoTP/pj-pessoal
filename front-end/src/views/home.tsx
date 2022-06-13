@@ -48,7 +48,6 @@ export function Home () {
                 draggable: true,
                 progress: undefined,
                 });
-                setDisable(true)
                 forceUpdate()
             }
     })
