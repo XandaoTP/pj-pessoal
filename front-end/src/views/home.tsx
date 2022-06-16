@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { Button, Card, Container, Form, Table } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import styled from "styled-components";
 import logo from "../../src/assets/img/Quer nos ajudar.png"
 import { collection, addDoc, getDocs, DocumentData } from "firebase/firestore";
@@ -100,10 +100,12 @@ const [names, setNames] = useState<DocumentData>()
                     </Form>
                 </Cardbck>
                 {names ? (
-                    <Table striped responsive className="bg-white border border-secondar opacity-75">
+                    <Row>
+                        <Col xs={12} >
+                    <Table className="opacity-75 ">
                         <thead>
                             <tr className="bg-dark">
-                                <th className="text-start text-white rfw-bold opacity-100">Nome</th>
+                                <th className="text-start text-white fw-bold opacity-100">Nome</th>
                                 <th className="text-end text-white fw-bold">Sugestão</th>
                             </tr>
                         </thead>
@@ -116,8 +118,10 @@ const [names, setNames] = useState<DocumentData>()
                                 <Tdname className="text-end fw-bold">{name.Nomebb}</Tdname>
                             </Nomebb>    
                         </tbody>
-                    )).sort()}   
+                    ))}   
                     </Table>
+                    </Col>
+                    </Row>
                     ) : (
                     <p>....</p>               
                 )
@@ -143,4 +147,6 @@ const Nomebb = styled.tr`
 const Tdname = styled.td`
     color: #c73098 !important;
     opacity: 100;
+    word-break: break-all;
+    width: 100%;
 `
