@@ -5,7 +5,7 @@ import logo from "../../src/assets/img/Quer nos ajudar.png"
 import { collection, addDoc, getDocs, DocumentData } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { toast } from 'react-toastify';
-import { useEffect, useReducer, useState } from "react";
+import { SetStateAction, useEffect, useReducer, useState } from "react";
 
 const getNames = async () => {
     const doc = collection(db, 'nomes')
@@ -56,6 +56,7 @@ export function Home () {
         controlId: `input-${fieldName}`
     }
 }
+
 const [ attvalue, forceUpdate] = useReducer(x=> x + 1, 0);
 const [names, setNames] = useState<DocumentData>()
         useEffect(() => {
@@ -70,7 +71,13 @@ const [names, setNames] = useState<DocumentData>()
             }
             fetch()
         }, [attvalue])
-    return (
+
+            const [valor, setValor] = useState('');
+            const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+              setValor(event.target.value);
+            };
+            
+        return (
         <div className="vh-100 ">
             <Container className="d-flex flex-column align-items-center">
                 <img src={logo} className='mt-4' width="326px" height="290px" alt='nossamenina'/> 
@@ -99,6 +106,7 @@ const [names, setNames] = useState<DocumentData>()
                         </div>
                     </Form>
                 </Cardbck>
+                <label htmlFor="name">Procure pelo nome do bebe</label><input id='name' className="m-3" type="text" value={valor} onChange={handleChange}/>
                 {names ? (
                     <Row>
                         <Col xs={12} >
@@ -109,7 +117,8 @@ const [names, setNames] = useState<DocumentData>()
                                 <th className="text-end text-white fw-bold">Sugestão</th>
                             </tr>
                         </thead>
-                        {names.sort((a: FormValues, b: FormValues) => { 
+                        {names.filter((el: any) => el.Nomebb.toString().toLowerCase().includes(valor.toLowerCase()))
+                        .sort((a: FormValues, b: FormValues) => { 
                             return a.name.localeCompare(b.name) })
                             .map((name: FormValues) => (
                         <tbody>
@@ -123,14 +132,13 @@ const [names, setNames] = useState<DocumentData>()
                     </Col>
                     </Row>
                     ) : (
-                    <p>....</p>               
+                    <p>.asasaasasa</p>               
                 )
             }
             </Container>
         </div>
     )
 }
-
 const Cardbck = styled(Card)`
     background-color: #f6e9f2;
     border-radius: 30px;
