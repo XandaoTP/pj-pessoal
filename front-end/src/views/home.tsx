@@ -120,14 +120,20 @@ const [names, setNames] = useState<DocumentData>()
                         {names.filter((el: any) => el.Nomebb.toString().toLowerCase().includes(valor.toLowerCase()))
                         .sort((a: FormValues, b: FormValues) => { 
                             return a.name.localeCompare(b.name) })
-                            .map((name: FormValues) => (
-                        <tbody>
-                            <Nomebb className="text-white">
-                                <td className="text-start text-dark fw-bold">{name.name}:</td>
-                                <Tdname className="text-end fw-bold">{name.Nomebb}</Tdname>
-                            </Nomebb>    
-                        </tbody>
-                    ))}   
+                            .map((name: FormValues) => {
+                                console.log(name.Nomebb)
+                                if(name.Nomebb === "") {
+                                    console.log('###############')
+                                    return (<p>NOME NÃO ENCONTRADO</p>)
+                                } else {
+                                    console.log()
+                                    return ( <tbody>
+                                    <Nomebb className="text-white">
+                                        <td className="text-start text-dark fw-bold">{name.name}:</td>
+                                        <Tdname className="text-end fw-bold">{name.Nomebb}</Tdname>
+                                    </Nomebb>    
+                                </tbody>)
+                                }})}
                     </Table>
                     </Col>
                     </Row>
